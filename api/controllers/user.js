@@ -21,14 +21,15 @@ const mailOptions = {
 exports.user_signup = (req, res, next) => {
     const user_id = crypto.randomBytes(4).toString('hex');
     const password = crypto.randomBytes(4).toString('hex');
+    const dob = new Date(req.body.dob).toISOString().slice(0, 19).replace('T', ' ').split(" ")[0];
     bcrypt.hash(password, 5, (err, hash) => {
         if(err) {
             return res.status(500).json({
                 error: err
             });
         } else {
-            var sql = `insert into user(user_id,name,email,password,qualification,father_name,dob,category,gender,vacancy_no,post_applied) 
-            values('${user_id}','${req.body.name}','${req.body.email}','${hash}','${req.body.qualification}','${req.body.father_name}','${req.body.dob}','${req.body.category}','${req.body.gender}','${req.body.vacancy_no}','${req.body.post_applied}')`
+            var sql = `insert into user(user_id,name,email,password,father_name,dob,category,gender,vacancy_no,post_applied) 
+            values('${user_id}','${req.body.name}','${req.body.email}','${hash}','${req.body.father_name}','${dob}','${req.body.category}','${req.body.gender}','${req.body.vacancy_no}','${req.body.post_applied}')`
             new Promise((resolve, reject) => {
                 connection.query(sql, function(error, results, fields) {
                     if(error) {
@@ -74,7 +75,7 @@ exports.user_login = (req, res, next) => {
             if(error)
                 reject(error)
             else {
-                console.log(results);
+                // console.log(results);
                 resolve(results);
             }    
         })
@@ -110,6 +111,30 @@ exports.user_login = (req, res, next) => {
     .catch(err => {
         return res.status(400).json({
             message: "Auth failed"
+        })
+    })
+}
+
+exports.user_update = (req, res, next) => {
+    const user_id = req.params.userId
+    var sql = `update user set address1='${req.body.address1}',address2='${req.body.address2}',qualification='${req.body.qualification}',experience='${req.body.experience}',photo_uri='${req.body.photo}',signature_uri='${req.body.sign}' where user_id='${user_id}'`;
+    new Promise((resolve, reject) => {
+        connection.query(sql, function(error, results, fields) {
+            if(error) {
+                reject(error)
+            }
+            resolve(results)
+        })
+    })
+    .then(result => {
+        res.status(201).json({
+            message: "Record Updated",
+            user: result
+        })
+    })
+    .catch(err => {
+        res.status(401).json({
+            error: err
         })
     })
 }
