@@ -2,12 +2,15 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
+const connection = require('./api/config/dbConfig')
 
 const userRoutes = require('./api/routes/users')
 
 app.use(morgan('dev'));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+
+connection.connect()
 
 app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*');
