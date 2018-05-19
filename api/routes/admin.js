@@ -13,21 +13,21 @@ const storage = multer.diskStorage({
     }
 });
 
-const fileFilter = (req, file, cb) => {
-    // reject a file
-    if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png') {
-      cb(null, true);
-    } else {
-      cb(null, false);
-    }
-  };
+// const fileFilter = (req, file, cb) => {
+//     // reject a file
+//     if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png') {
+//       cb(null, true);
+//     } else {
+//       cb(null, false);
+//     }
+//   };
 
 const upload = multer({
     storage: storage,
     limits: {
       fileSize: 1024 * 1024 * 5
-    },
-    fileFilter: fileFilter
+    }
+    // fileFilter: fileFilter
 });
 
 router.get('/', AdminController.get_vacancies);
