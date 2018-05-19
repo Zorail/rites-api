@@ -27,7 +27,8 @@ exports.user_signup = (req, res, next) => {
                 error: err
             });
         } else {
-            var sql = `insert into user(user_id,name,email,password) values('${user_id}','${req.body.name}','${req.body.email}','${hash}')`
+            var sql = `insert into user(user_id,name,email,password,qualification,father_name,dob,category,gender,vacancy_no,post_applied) 
+            values('${user_id}','${req.body.name}','${req.body.email}','${hash}','${req.body.qualification}','${req.body.father_name}','${req.body.dob}','${req.body.category}','${req.body.gender}','${req.body.vacancy_no}','${req.body.post_applied}')`
             new Promise((resolve, reject) => {
                 connection.query(sql, function(error, results, fields) {
                     if(error) {
