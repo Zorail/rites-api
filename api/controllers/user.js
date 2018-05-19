@@ -2,6 +2,8 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
 const nodemailer = require('nodemailer');
+const pdf = require('html-pdf');
+const fs = require('fs');
 
 const connection = require('../config/dbConfig')
 
@@ -16,6 +18,29 @@ const transporter = nodemailer.createTransport({
 const mailOptions = {
     from : 'no-reply@gmail.com',
     subject: 'Rites registration userid and password'
+}
+
+function getHtml(user) {
+    var html = `
+    <html>
+        <body>
+            <p>User Id: ${user.user_id}</p><br />
+            <p>Email: '${user.email}'</p><br />
+            <p>Name: '${user.name}'</p><br />
+            <p>Father's Name: '${user.father_name}'</p><br />
+            <p>Date Of Birth: '${user.dob}'</p><br />
+            <p>Category: '${user.category}'</p><br />
+            <p>Gender: '${user.gender}'</p><br />
+            <p>Vacancy Number applied for: '${user.vacancy_no}'</p><br />
+            <p>Post Applied For: '${user.post_applied}'</p><br />
+            <p>Address1: '${user.address1}'</p><br />
+            <p>Address2: '${user.address2}'</p><br />
+            <p>Qualification: '${user.qualification}'</p><br />
+            <p>Experience: '${user.experience}'</p><br />
+        </body>
+    </html>
+    `
+    return html;
 }
 
 
@@ -130,8 +155,20 @@ exports.user_update = (req, res, next) => {
         })
     })
     .then(result => {
+        const sql = `select * from user where user_id='${user_id}'`
+        connection.query(sql, function(error, results, fields) {
+            if(error){
+                throw error
+            } else {
+                pdf.create(getHtml(results[0])).toFile('./uploads/biodata/temp', function(err, res) {
+                    console.log(res);
+                })
+            }
+        })
+    })
+    .then(result => {
         res.status(201).json({
-            message: "Record Updated",
+            message: "Record Updated"
         })
     })
     .catch(err => {
