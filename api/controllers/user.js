@@ -129,7 +129,6 @@ exports.user_update = (req, res, next) => {
     .then(result => {
         res.status(201).json({
             message: "Record Updated",
-            user: result
         })
     })
     .catch(err => {
