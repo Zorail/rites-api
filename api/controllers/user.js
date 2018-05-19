@@ -22,6 +22,7 @@ const mailOptions = {
 exports.user_signup = (req, res, next) => {
     const user_id = crypto.randomBytes(4).toString('hex');
     const password = crypto.randomBytes(4).toString('hex');
+    console.log(password);
     const dob = new Date(req.body.dob).toISOString().slice(0, 19).replace('T', ' ').split(" ")[0];
     bcrypt.hash(password, 5, (err, hash) => {
         if(err) {

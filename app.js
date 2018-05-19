@@ -4,7 +4,8 @@ const bodyParser = require('body-parser');
 const morgan = require('morgan');
 const connection = require('./api/config/dbConfig')
 
-const userRoutes = require('./api/routes/users')
+const userRoutes = require('./api/routes/users');
+const adminRoutes = require('./api/routes/admin');
 
 app.use(morgan('dev'));
 app.use('/uploads', express.static('uploads'));
@@ -25,6 +26,7 @@ app.use((req, res, next) => {
 })
 
 app.use('/user', userRoutes);
+app.use('/admin', adminRoutes)
 
 app.use((req, res, next) => {
     const error = new Error('Not found');
