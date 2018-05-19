@@ -44,7 +44,6 @@ exports.user_signup = (req, res, next) => {
                     if(err)
                         throw err
                     else {
-                        console.log(info)
                         return result
                     }    
                 })
