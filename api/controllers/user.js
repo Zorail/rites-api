@@ -18,6 +18,7 @@ const mailOptions = {
     subject: 'Rites registration userid and password'
 }
 
+
 exports.user_signup = (req, res, next) => {
     const user_id = crypto.randomBytes(4).toString('hex');
     const password = crypto.randomBytes(4).toString('hex');
