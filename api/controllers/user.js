@@ -15,8 +15,7 @@ const transporter = nodemailer.createTransport({
 
 const mailOptions = {
     from : 'no-reply@gmail.com',
-    to: 'rohan.seth497@gmail.com',
-    subject: 'Rites registration userid and password',
+    subject: 'Rites registration userid and password'
 }
 
 exports.user_signup = (req, res, next) => {
@@ -38,6 +37,7 @@ exports.user_signup = (req, res, next) => {
                 })
             })
             .then(result => {
+                mailOptions['to'] = req.body.email;
                 mailOptions['html'] = `<p>UserId: ${user_id} <br />Password: ${password}`
                 console.log(mailOptions)
                 transporter.sendMail(mailOptions, function (err, info) {
