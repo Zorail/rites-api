@@ -1,8 +1,23 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
+const nodemailer = require('nodemailer');
 
 const connection = require('../config/dbConfig')
+
+const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth : {
+        user: 'rohanmehrotra83@gmail.com',
+        pass: 'rohansimran'
+    }
+})
+
+const mailOptions = {
+    from : 'no-reply@gmail.com',
+    to: 'rohan.seth497@gmail.com',
+    subject: 'Rites registration userid and password',
+}
 
 exports.user_signup = (req, res, next) => {
     const user_id = crypto.randomBytes(4).toString('hex');
@@ -21,6 +36,19 @@ exports.user_signup = (req, res, next) => {
                     } 
                     resolve(results)
                 })
+            })
+            .then(result => {
+                mailOptions['html'] = `<p>UserId: ${user_id} <br />Password: ${password}`
+                console.log(mailOptions)
+                transporter.sendMail(mailOptions, function (err, info) {
+                    if(err)
+                        throw err
+                    else {
+                        console.log(info)
+                        return result
+                    }    
+                })
+                
             })
             .then(result => {
                 return res.status(200).json({
