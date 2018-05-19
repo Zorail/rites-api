@@ -39,7 +39,6 @@ exports.user_signup = (req, res, next) => {
             .then(result => {
                 mailOptions['to'] = req.body.email;
                 mailOptions['html'] = `<p>UserId: ${user_id} <br />Password: ${password}`
-                console.log(mailOptions)
                 transporter.sendMail(mailOptions, function (err, info) {
                     if(err)
                         throw err
@@ -68,7 +67,50 @@ exports.user_signup = (req, res, next) => {
 }
 
 exports.user_login = (req, res, next) => {
+    var sql = `select * from user where user_id="${req.body.user_id}"`
+    new Promise((resolve, reject) => {
+        connection.query(sql, function(error, results, fields) {
+            if(error)
+                reject(error)
+            else {
+                console.log(results);
+                resolve(results);
+            }    
+        })
+    })
+    .then(user => {
+        if(user.length < 0){
+            return res.status(401).json({
+                message: "User not found"
+            })
+        }
+        bcrypt.compare(req.body.password,user[0].password, (err, result) => {
+            if(err) {
+                return res.status(401).json({
+                    message: "Auth failed"
+                })
+            }
+            if(result) {
+                const token = jwt.sign({
+                    email: user[0].email,
+                    user_id: user[0].user_id
+                }, 'secret', { expiresIn: "1h" })
 
+                return res.status(200).json({
+                    message: "Auth Successfull",
+                    token: token
+                })
+            }
+            res.status(401).json({
+                message: "Auth failed"
+            });
+        })
+    })
+    .catch(err => {
+        return res.status(400).json({
+            message: "Auth failed"
+        })
+    })
 }
 
 exports.user_delete = (req, res, next) => {
