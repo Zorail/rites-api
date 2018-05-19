@@ -160,7 +160,8 @@ exports.user_update = (req, res, next) => {
             if(error){
                 throw error
             } else {
-                pdf.create(getHtml(results[0])).toFile('./uploads/biodata/temp', function(err, res) {
+                const path = `./uploads/biodata/${results[0].user_id}.pdf`
+                pdf.create(getHtml(results[0])).toFile(path, function(err, res) {
                     console.log(res);
                 })
             }
