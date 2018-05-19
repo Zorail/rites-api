@@ -119,7 +119,7 @@ exports.user_login = (req, res, next) => {
 exports.user_update = (req, res, next) => {
     const user_id = req.params.userId
     // console.log(req.files);
-    var sql = `update user set address1='${req.body.address1}',address2='${req.body.address2}',qualification='${req.body.qualification}',experience='${req.body.experience}',photo_uri='${req.body.photo}',signature_uri='${req.body.sign}' where user_id='${user_id}'`;
+    var sql = `update user set address1='${req.body.address1}',address2='${req.body.address2}',qualification='${req.body.qualification}',experience='${req.body.experience}',photo_uri='${req.files[0].path}',signature_uri='${req.files[1].path}' where user_id='${user_id}'`;
     new Promise((resolve, reject) => {
         connection.query(sql, function(error, results, fields) {
             if(error) {
