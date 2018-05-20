@@ -29,7 +29,11 @@ exports.get_vacancies_with_user = (req, res, next) => {
             if(error){
                 reject(error)
             }
-            resolve(results);
+            const data = results.map(user => user.vacancy_no);
+            const set1 = new Set(data);
+            const arr = Array.from(set1);
+            const demo = arr.map(vacancy_no => results.filter(user => user.vacancy_no == vacancy_no));
+            resolve(demo);
         })
     })
     .then(users => {
