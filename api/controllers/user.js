@@ -155,21 +155,29 @@ exports.user_update = (req, res, next) => {
         })
     })
     .then(result => {
-        const sql = `select * from user where user_id='${user_id}'`
+        const sql = `select * from user where user_id='${user_id}'`        
         connection.query(sql, function(error, results, fields) {
             if(error){
                 throw error
             } else {
                 const path = `./uploads/biodata/${results[0].user_id}.pdf`
-                pdf.create(getHtml(results[0])).toFile(path, function(err, res) {
-                    console.log(res);
+                pdf.create(getHtml(results[0])).toFile(path, function(err, response) {
+                    
+                    const filename = response.filename
+                    const str = filename.slice(filename.indexOf('uploads'),filename.length);
+                    var sql = `update user set biodata_uri='${str}'`
+                    connection.query(sql, function(error, results, fields) {
+                        if(error){
+                            throw error
+                        }
+                        else {
+                            res.status(201).json({
+                                message: "Record Updated"
+                            })
+                        }
+                    })
                 })
             }
-        })
-    })
-    .then(result => {
-        res.status(201).json({
-            message: "Record Updated"
         })
     })
     .catch(err => {
