@@ -25,18 +25,18 @@ function getHtml(user) {
     <html>
         <body>
             <p>User Id: ${user.user_id}</p><br />
-            <p>Email: '${user.email}'</p><br />
-            <p>Name: '${user.name}'</p><br />
-            <p>Father's Name: '${user.father_name}'</p><br />
-            <p>Date Of Birth: '${user.dob}'</p><br />
-            <p>Category: '${user.category}'</p><br />
-            <p>Gender: '${user.gender}'</p><br />
-            <p>Vacancy Number applied for: '${user.vacancy_no}'</p><br />
-            <p>Post Applied For: '${user.post_applied}'</p><br />
-            <p>Address1: '${user.address1}'</p><br />
-            <p>Address2: '${user.address2}'</p><br />
-            <p>Qualification: '${user.qualification}'</p><br />
-            <p>Experience: '${user.experience}'</p><br />
+            <p>Email: ${user.email}</p><br />
+            <p>Name: ${user.name}</p><br />
+            <p>Father's Name: ${user.father_name}</p><br />
+            <p>Date Of Birth: ${user.dob}</p><br />
+            <p>Category: ${user.category}</p><br />
+            <p>Gender: ${user.gender}</p><br />
+            <p>Vacancy Number applied for: ${user.vacancy_no}</p><br />
+            <p>Post Applied For: ${user.post_applied}</p><br />
+            <p>Address1: ${user.address1}</p><br />
+            <p>Address2: ${user.address2}</p><br />
+            <p>Qualification: ${user.qualification}</p><br />
+            <p>Experience: ${user.experience}</p>
         </body>
     </html>
     `
