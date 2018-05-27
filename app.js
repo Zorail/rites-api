@@ -3,14 +3,22 @@ const app = express();
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
 const connection = require('./api/config/dbConfig')
+const serveIndex = require('serve-index')
+const path = require('path');
+const serveStatic = require('serve-static')
 
 const userRoutes = require('./api/routes/users');
 const adminRoutes = require('./api/routes/admin');
 
 app.use(morgan('dev'));
-app.use('/uploads', express.static('uploads'));
+/**for files */
+app.use(serveStatic(path.join(__dirname, 'uploads')));
+/**for directory */
+app.use('/uploads', express.static('uploads'), serveIndex('uploads'))
+// app.use(express.static(__dirname + '/uploads'));
 app.use(bodyParser.urlencoded({ extended: false, limit: '50mb' }));
 app.use(bodyParser.json({limit:'50mb'}));
+
 
 connection.connect()
 
