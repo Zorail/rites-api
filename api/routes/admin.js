@@ -34,6 +34,8 @@ router.get('/', AdminController.get_vacancies);
 
 router.get('/all', AdminController.get_vacancies_with_user);
 
+router.post('/login', AdminController.login_admin);
+
 router.post('/', upload.any(), AdminController.vacancy_upload);
 
 module.exports = router;

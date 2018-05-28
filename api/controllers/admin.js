@@ -1,4 +1,6 @@
 const connection = require('../config/dbConfig')
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 exports.get_vacancies = (req, res, next) => {
     var sql = `select * from vacancy_master`;
@@ -72,6 +74,35 @@ exports.vacancy_upload = (req, res, next) => {
     .catch(err => {
         res.status(500).json({
             error: err
+        })
+    })
+}
+
+exports.login_admin = (req, res, next) => {
+    var email = req.body.email
+    var password = req.body.password
+    var pass_hash = '$2b$05$NbGCMh5nl4ah33.0DaZREOOjI.knWSq8YNXBuU3aeHo8i6GPXITC2'
+    new Promise((resolve, reject) => {
+        bcrypt.compare(password, pass_hash, (err, result) => {
+            if(err) {
+                return res.status(401).json({
+                    error: err
+                })
+            }
+            if(result) {
+                const token = jwt.sign({
+                    email: email,
+                    type: 'amdin'
+                }, 'secret', { expiresIn: "1h" })
+
+                return res.status(200).json({
+                    message: "Auth Successfull",
+                    token: token
+                })
+            }
+            res.status(401).json({
+                message: "Auth failed"
+            });
         })
     })
 }
