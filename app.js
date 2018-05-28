@@ -11,10 +11,7 @@ const userRoutes = require('./api/routes/users');
 const adminRoutes = require('./api/routes/admin');
 
 app.use(morgan('dev'));
-/**for files */
-app.use(serveStatic(path.join(__dirname, 'uploads')));
-/**for directory */
-app.use('/uploads', express.static('uploads'), serveIndex('uploads'))
+
 // app.use(express.static(__dirname + '/uploads'));
 app.use(bodyParser.urlencoded({ extended: false, limit: '50mb' }));
 app.use(bodyParser.json({limit:'50mb'}));
@@ -32,6 +29,11 @@ app.use((req, res, next) => {
     }
     next();
 })
+
+/**for files */
+app.use(serveStatic(path.join(__dirname, 'uploads')));
+/**for directory */
+app.use('/uploads', express.static('uploads'), serveIndex('uploads'))
 
 app.use('/user', userRoutes);
 app.use('/admin', adminRoutes)
