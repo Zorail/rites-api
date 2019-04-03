@@ -11,4 +11,4 @@ A restful api has been made for which consists of the following features:
     7) The uploaded images and photographs and biodata are stored inside the uploads directory.
 
 The application has adependency of NodeJS being installed on the server
-The app runs by executing 'npm start' inside './' direectory.
+The app runs by executing 'npm install and then npm start' inside './' direectory.
